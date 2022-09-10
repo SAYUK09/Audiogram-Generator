@@ -15,12 +15,14 @@ import {
 } from "remotion";
 import audioSource from "../assets/audio.mp3";
 import coverImg from "../assets/cover.jpg";
+import { useAudiogram } from "../contexts/audiogramContext";
 import { LINE_HEIGHT, PaginatedSubtitles } from "./Subtitles";
 
 const AudioViz = () => {
+  const { audigramDetails } = useAudiogram();
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-  const audioData = useAudioData(audioSource);
+  const audioData = useAudioData(audigramDetails.audio);
 
   if (!audioData) {
     return null;
@@ -56,20 +58,25 @@ const AudioViz = () => {
   );
 };
 
-const subtitlesSource = staticFile("subtitles.srt");
+// const subtitlesSource = staticFile("subtitles.srt");
 
 export const AudiogramComposition = () => {
   const { durationInFrames } = useVideoConfig();
-
   const [handle] = useState(() => delayRender());
   const [subtitles, setSubtitles] = useState();
   const ref = useRef();
+
+  const { audigramDetails } = useAudiogram();
+
+  const img = new Image(audigramDetails.cover);
+
+  const subtitlesSource = staticFile(audigramDetails.srtFile);
 
   useEffect(() => {
     fetch(subtitlesSource)
       .then((res) => res.text())
       .then((text) => {
-        console.log(text, "ttt");
+        console.log(text);
         setSubtitles(text);
         continueRender(handle);
       })
@@ -79,7 +86,7 @@ export const AudiogramComposition = () => {
   }, [handle]);
 
   // Change this to adjust the part of the audio to use
-  const offset = 2000;
+  const offset = 10;
 
   if (!subtitles) {
     return null;
@@ -89,7 +96,7 @@ export const AudiogramComposition = () => {
     <div ref={ref}>
       <AbsoluteFill>
         <Sequence from={-offset}>
-          <Audio src={audioSource} />
+          <Audio src={audigramDetails.audio} />
 
           <div
             className="container"
@@ -98,12 +105,9 @@ export const AudiogramComposition = () => {
             }}
           >
             <div className="row">
-              <Img className="cover" src={coverImg} />
+              <img className="cover" src={audigramDetails?.cover} />
 
-              <div className="title">
-                #234 – Money, Kids, and Choosing Your Market with Justin Jackson
-                of Transistor.fm
-              </div>
+              <div className="title">{audigramDetails?.title}</div>
             </div>
 
             <div>
