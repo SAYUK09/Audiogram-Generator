@@ -3,39 +3,21 @@ import "../App.css";
 import { useAudiogram } from "../contexts/audiogramContext";
 import { AudiogramComposition } from "../remotion/Composition";
 import { Player } from "@remotion/player";
+import { Link } from "react-router-dom";
 
 function Home() {
-  const [title, setTitle] = useState("");
-  const [img, setImg] = useState();
-  const [audio, setAudio] = useState();
-
-  const fps = 30;
-  const durationInFrames = 30 * fps;
-
   const { audigramDetails, setAudigramDetails } = useAudiogram();
-  console.log(audigramDetails);
+
   const audioInput = useRef();
   const imageInput = useRef();
-
-  function handleTitleInput(e) {
-    setTitle(e.target.value);
-  }
-
-  function handleImgUpload() {}
-
-  function handleAudioUpload() {}
+  const titleInput = useRef();
 
   async function handleSubmit(event) {
     event.preventDefault();
 
-    console.log(imageInput.current.files[0]);
-    console.log(audioInput.current.files[0]);
-
+    // get the uploaded image url
     const imgFile = new FormData();
-    const audioFile = new FormData();
-
     imgFile.append("image", imageInput.current.files[0]);
-    audioFile.append("audio", audioInput.current.files[0]);
 
     const imageResult = await fetch(
       "https://greenshrillboard.sayuk.repl.co/upload-image",
@@ -48,6 +30,10 @@ function Home() {
 
     const imgData = await imageResult.json();
 
+    // get the uploaded audio url
+    const audioFile = new FormData();
+    audioFile.append("audio", audioInput.current.files[0]);
+
     const audioResult = await fetch(
       "https://greenshrillboard.sayuk.repl.co/upload-audio",
 
@@ -56,60 +42,79 @@ function Home() {
         body: audioFile,
       }
     );
-
     const audioData = await audioResult.json();
 
-    console.log(audioData);
-
+    // update the context data
     setAudigramDetails({
-      title: title,
+      title: titleInput.current.value,
       cover: imgData.url,
-      audio:
-        "https://res.cloudinary.com/sayuk/video/upload/v1662829192/clip_wiafmb.mp3",
+      audio: audioData.url,
       srtFile: "clip.mp3.srt",
     });
-
-    console.log(audigramDetails);
   }
 
   return (
-    <div>
-      <div className="">
+    <div className="homeParent">
+      <div className="formParentContainer">
+        <h1>Audiogram Generator</h1>
         <form className="formContainer" onSubmit={handleSubmit}>
-          <input
-            onChange={handleTitleInput}
-            className="titleInput"
-            type="text"
-          />
+          <label>
+            Enter title:
+            <input ref={titleInput} className="titleInput" type="text" />
+          </label>
 
           <label>
             Select Image:
-            <input className="imgBtn" type={"file"} ref={imageInput} />
+            <input
+              className=" imgBtn"
+              accept="image/*"
+              type={"file"}
+              ref={imageInput}
+            />
           </label>
 
           <label>
             Select Audio:
-            <input className="audioInp" type={"file"} ref={audioInput} />
+            <input
+              className=" audioInp"
+              accept="audio/*"
+              type={"file"}
+              ref={audioInput}
+            />
           </label>
 
-          <button type="submit">Generate Audiogram</button>
+          <div className="submitBtnContainer">
+            <button className=" submitBtn" type="submit">
+              Generate Audiogram
+            </button>
+          </div>
         </form>
+
+        <div className="redirectBtnContainer">
+          {audigramDetails.audio && (
+            <Link to="/audiogram">
+              <button className="redirectBtn">Go to Audiogram Player</button>
+            </Link>
+          )}
+        </div>
       </div>
 
-      {audigramDetails.title && (
-        <Player
-          component={AudiogramComposition}
-          durationInFrames={durationInFrames}
-          fps={fps}
-          compositionWidth={1920}
-          compositionHeight={1080}
-          style={{
-            width: 1280,
-            height: 720,
-          }}
-          controls
-        />
-      )}
+      {/* <div className="audiogramPlayer">
+        {audigramDetails.title && (
+          <Player
+            component={AudiogramComposition}
+            durationInFrames={900}
+            fps={30}
+            compositionWidth={1920}
+            compositionHeight={1080}
+            style={{
+              width: 1024,
+              height: 576,
+            }}
+            controls
+          />
+        )}
+      </div> */}
     </div>
   );
 }

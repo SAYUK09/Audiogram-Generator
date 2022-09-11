@@ -1,21 +1,103 @@
+
+.homeParent {
+  display: flex;
+  min-height: 100vh;
+  justify-content: center;
+  align-items: center;
+  }
+
+  .formParentContainer{
+color: white;
+    margin: 40px auto;
+    background-color: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 15px;
+    padding: 32px;
+    backdrop-filter: blur(10px);
+  }
+
 .formContainer{
   display: flex;
-  padding: 2rem;
   justify-content: center;
-
   flex-direction: column;
+  font-size: larger;
+
+  
 }
 
 .titleInput{
   width: 12rem;
-  padding: 1rem 2rem;
+  
 }
 
-button{
-  width: 8rem;
-  padding: 1rem;
-}
 
 input{
   margin: 1rem;
+}
+
+.redirectBtnContainer{
+  margin: 2rem;
+}
+
+.submitBtn{
+  border-radius: 0.5rem;
+  border: 1px black solid;
+  font-size: large;
+  margin: 1rem 0;
+  padding: 0.5rem 2rem;
+}
+
+label{
+  margin: 0.5rem;
+}
+
+.submitBtnContainer{
+  display: flex;
+  justify-content: center;
+}
+
+.redirectBtnContainer{
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.redirectBtn{
+  /* display: inline-block; */
+  padding: 24px 32px;
+  border: 0;
+  text-decoration: none;
+  border-radius: 15px;
+  background-color: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(30px);
+  color: rgba(255,255,255,0.8);
+  font-size: 1.2rem;
+  letter-spacing: 2px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.redirectBtn:hover {
+  background-color: rgba(255,255,255,0.2);
+}
+
+
+.audiogramParent{
+ color: whitesmoke;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.audigramContainer{
+  padding: 2rem;
+  margin: 40px auto;
+  background-color: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 15px;
+  padding: 32px;
+  backdrop-filter: blur(10px);
 }

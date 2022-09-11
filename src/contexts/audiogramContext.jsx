@@ -6,8 +6,7 @@ export function AudiogramProvider({ children }) {
   const [audigramDetails, setAudigramDetails] = useState({
     title: "",
     cover: "",
-    audio:
-      "https://res.cloudinary.com/sayuk/video/upload/v1662829192/clip_wiafmb.mp3",
+    audio: "",
     srtFile: "clip.mp3.srt",
   });
 

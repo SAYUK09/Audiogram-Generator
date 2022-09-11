@@ -1,21 +1,16 @@
 import React from "react";
 import { Player } from "@remotion/player";
-import { MyComp } from "../remotion/MyComp";
-import { Composition } from "remotion";
 import { AudiogramComposition } from "../remotion/Composition";
 import "../remotion/style.css";
+import "../App.css";
 
-function Video() {
+function Audiogram() {
   const fps = 30;
   const durationInFrames = 30 * fps;
 
   return (
-    <div>
-      <h1>VIDEO</h1>
-
-      <div>
-        <h1>Hello There</h1>
-
+    <div className="audiogramParent">
+      <div className="audigramContainer">
         <Player
           component={AudiogramComposition}
           durationInFrames={durationInFrames}
@@ -33,4 +28,4 @@ function Video() {
   );
 }
 
-export default Video;
+export default Audiogram;
