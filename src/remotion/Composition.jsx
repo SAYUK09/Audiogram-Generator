@@ -70,13 +70,13 @@ export const AudiogramComposition = () => {
 
   const img = new Image(audigramDetails.cover);
 
-  const subtitlesSource = staticFile(audigramDetails.srtFile);
+  // const subtitlesSource = staticFile(audigramDetails.srtFile);
 
   useEffect(() => {
-    fetch(subtitlesSource)
+    fetch(audigramDetails.srtFile)
       .then((res) => res.text())
       .then((text) => {
-        console.log(text);
+        console.log(text, "wok");
         setSubtitles(text);
         continueRender(handle);
       })

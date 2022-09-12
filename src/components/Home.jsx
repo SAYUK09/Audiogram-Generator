@@ -1,8 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import "../App.css";
 import { useAudiogram } from "../contexts/audiogramContext";
-import { AudiogramComposition } from "../remotion/Composition";
-import { Player } from "@remotion/player";
 import { Link } from "react-router-dom";
 
 function Home() {
@@ -11,6 +9,7 @@ function Home() {
   const audioInput = useRef();
   const imageInput = useRef();
   const titleInput = useRef();
+  const srtFileInput = useRef();
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -44,12 +43,26 @@ function Home() {
     );
     const audioData = await audioResult.json();
 
+    // get the uploaded srt url
+    const srtFile = new FormData();
+    srtFile.append("srt", srtFileInput.current.files[0]);
+
+    const srtResult = await fetch(
+      "https://greenshrillboard.sayuk.repl.co/upload-srt",
+
+      {
+        method: "POST",
+        body: srtFile,
+      }
+    );
+    const srtData = await srtResult.json();
+
     // update the context data
     setAudigramDetails({
       title: titleInput.current.value,
       cover: imgData.url,
       audio: audioData.url,
-      srtFile: "clip.mp3.srt",
+      srtFile: srtData.url,
     });
   }
 
@@ -83,6 +96,11 @@ function Home() {
             />
           </label>
 
+          <label>
+            Select SRT File:
+            <input className=" audioInp" type={"file"} ref={srtFileInput} />
+          </label>
+
           <div className="submitBtnContainer">
             <button className=" submitBtn" type="submit">
               Generate Audiogram
@@ -98,23 +116,6 @@ function Home() {
           )}
         </div>
       </div>
-
-      {/* <div className="audiogramPlayer">
-        {audigramDetails.title && (
-          <Player
-            component={AudiogramComposition}
-            durationInFrames={900}
-            fps={30}
-            compositionWidth={1920}
-            compositionHeight={1080}
-            style={{
-              width: 1024,
-              height: 576,
-            }}
-            controls
-          />
-        )}
-      </div> */}
     </div>
   );
 }

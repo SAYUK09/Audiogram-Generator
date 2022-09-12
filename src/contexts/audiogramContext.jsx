@@ -7,7 +7,7 @@ export function AudiogramProvider({ children }) {
     title: "",
     cover: "",
     audio: "",
-    srtFile: "clip.mp3.srt",
+    srtFile: "",
   });
 
   console.log(audigramDetails, "dee");
